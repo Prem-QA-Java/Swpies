@@ -1,13 +1,11 @@
 package Base;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -41,12 +39,13 @@ public class runner {
 
 	@Test
 	public void login() throws InterruptedException {
-		Date dd = new Date();
-		SimpleDateFormat sdf1 = new SimpleDateFormat("MMMM yyyy");
-		SimpleDateFormat sdf3 = new SimpleDateFormat("HHmm");
-		SimpleDateFormat sdf2 = new SimpleDateFormat("MM");
+		LocalDateTime dd = LocalDateTime.now();
+		DateTimeFormatter sdf1 = DateTimeFormatter.ofPattern("MMMM yyyy");
+		DateTimeFormatter sdf3 = DateTimeFormatter.ofPattern("HHmm");
+		DateTimeFormatter sdf2 = DateTimeFormatter.ofPattern("MM");
 		// To check if it is Sunday or Saturday if it is WH then else will execute
-		if (dd.getDay() == 0 || dd.getDay() == 6) {
+		if (dd.getDayOfWeek().getValue() == 0 || dd.getDayOfWeek().getValue() == 6) {
+			d.quit();
 			System.exit(0);
 		} else {
 			// This will loop until the employeeId are over
@@ -54,17 +53,17 @@ public class runner {
 			d.findElement(By.id("txtUserName")).sendKeys(id);
 			d.findElement(By.id("txtPassword")).sendKeys(pass);
 			d.findElement(By.id("btnLogin")).click();
-			// To check the button is swiped in or swiped out if it is already swiped in then if will execute
+	// To check the button is swiped in or swiped out if it is already swiped in then if will execute
 			Thread.sleep(10000);
 			if (d.findElement(By.xpath("//*[@ng-click='applAttendance()'][1]")).getAttribute("class")
-					.equals("newpaytimein ng-binding ng-hide")) {  //LOgout code
+					.equals("newpaytimein ng-binding ng-hide")) { // LOgout code
 				String lastSwiped = d.findElement(By.xpath("//*[@ng-if='lastSwipedStatus']//p")).getText();
 				String[] lastSwipedSplited = lastSwiped.split("-");
 				String time2 = lastSwipedSplited[1].replace(" ", "").replace(":", "");
 				int time3 = Integer.parseInt(time2);
 				time = time3 + 900;
 				int presentTime = Integer.parseInt(sdf3.format(dd));
-				// This will check if the 9h are completed are not if 9h are completed then if will execute
+		// This will check if the 9h are completed are not if 9h are completed then if will execute
 				if (time <= presentTime) {
 					d.findElement(By.xpath("//*[@ng-click='applAttendance()'][2]")).click();
 				} else {
@@ -76,10 +75,8 @@ public class runner {
 					d.findElement(By.id("menu1")).click();
 					d.findElement(By.xpath("//*[@id='topNavigation']//a[@ng-click='logout()']//span")).click();
 				}
-			} else {      //Login code
-				d.findElement(By.xpath(
-						"//*[@id='abc1']/div/div/div/div[1]/div/div[1]/div[2]/div[3]/div/div/div[2]/table/tbody/tr/td[1]"))
-						.click();
+			} else { // Login code
+				d.findElement(By.xpath("//div[3]/div/div/div[2]//td[1]")).click();
 				d.findElement(By.xpath("//*[text()='Calendar View']")).click();
 				String mouth = d.findElement(By.xpath("//*[@id='calendar']//h2")).getText();
 				if (mouth.equals(sdf1.format(dd))) {
