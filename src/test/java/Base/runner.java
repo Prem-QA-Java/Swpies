@@ -70,7 +70,7 @@ public class runner {
 					Random randomGenerator = new Random();
 					int num = randomGenerator.nextInt(60) + 1;
 					long pause = (long) ((time - presentTime) + num);
-					Thread.sleep((pause * 60 / 100) * 60000);
+					Thread.sleep(pause * 60 * 1000);
 					d.findElement(By.xpath("//*[@ng-click='applAttendance()'][2]")).click();
 					d.findElement(By.id("menu1")).click();
 					d.findElement(By.xpath("//*[@id='topNavigation']//a[@ng-click='logout()']//span")).click();
