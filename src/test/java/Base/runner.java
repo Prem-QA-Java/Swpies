@@ -19,11 +19,11 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class runner {
 
-	WebDriver d;
+	static WebDriver d;
 	boolean present;
 	int time;
-	String id;
-	String pass;
+	static String id;
+	static String pass;
 
 	@Parameters({ "employeeId", "password" })
 	@BeforeClass
@@ -73,8 +73,6 @@ public class runner {
 					System.out.println("Time paused: "+ pause * 60 * 1000);
 					Thread.sleep(pause * 60 * 1000);
 					d.findElement(By.xpath("//*[@ng-click='applAttendance()'][2]")).click();
-					d.findElement(By.id("menu1")).click();
-					d.findElement(By.xpath("//*[@id='topNavigation']//a[@ng-click='logout()']//span")).click();
 				}
 			} else { // Login code
 				d.findElement(By.xpath("//div[3]/div/div/div[2]//td[1]")).click();
@@ -143,8 +141,6 @@ public class runner {
 					time = time * 60000;
 					Thread.sleep(time);
 					d.findElement(By.xpath("//*[@ng-click='applAttendance()'][1]")).click();
-					d.findElement(By.id("menu1")).click();
-					d.findElement(By.xpath("//*[@id='topNavigation']//a[@ng-click='logout()']//span")).click();
 				}
 			}
 		}
@@ -154,5 +150,21 @@ public class runner {
 	@AfterClass
 	public void exit() {
 		d.quit();
+	}
+	
+	public static void main(String[] args) {
+		WebDriverManager.chromedriver().setup();
+		d = new ChromeDriver();
+		d.get("https://apps.paybooks.in/mylogin.aspx");
+		d.manage().deleteAllCookies();
+		d.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+		id = "762";
+		pass = "prem2180%";
+		d.findElement(By.id("txtDomain")).sendKeys("Apalya");
+		d.findElement(By.id("txtUserName")).sendKeys(id);
+		d.findElement(By.id("txtPassword")).sendKeys(pass);
+		d.findElement(By.id("btnLogin")).click();
+		d.findElement(By.id("menu1")).click();
+		d.findElement(By.xpath("//*[@id='topNavigation']//a[@ng-click='logout()']//span")).click();
 	}
 }
