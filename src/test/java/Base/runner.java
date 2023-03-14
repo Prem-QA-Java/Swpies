@@ -19,15 +19,15 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class runner {
 
-	static WebDriver d;
+	WebDriver d;
 	boolean present;
 	int time;
-	static String id;
-	static String pass;
+	String id;
+	String pass;
 
 	@Parameters({ "employeeId", "password" })
 	@BeforeClass
-	public void d(@Optional("762") String employeeId, @Optional("prem2180%") String password) {
+	public void d(String employeeId, String password) {
 		WebDriverManager.chromedriver().setup();
 		d = new ChromeDriver();
 		d.get("https://apps.paybooks.in/mylogin.aspx");
@@ -56,7 +56,7 @@ public class runner {
 	// To check the button is swiped in or swiped out if it is already swiped in then if will execute
 			Thread.sleep(10000);
 			if (d.findElement(By.xpath("//*[@ng-click='applAttendance()'][1]")).getAttribute("class")
-					.equals("newpaytimein ng-binding ng-hide")) { // LOgout code
+					.equals("newpaytimein ng-binding ng-hide")) { // Logout code
 				String lastSwiped = d.findElement(By.xpath("//*[@ng-if='lastSwipedStatus']//p")).getText();
 				String[] lastSwipedSplited = lastSwiped.split("-");
 				String time2 = lastSwipedSplited[1].replace(" ", "").replace(":", "");
@@ -70,8 +70,8 @@ public class runner {
 					Random randomGenerator = new Random();
 					int num = randomGenerator.nextInt(60) + 1;
 					long pause = (long) ((time - presentTime) + num);
-					System.out.println("Time paused: "+ pause * 60 * 1000);
-					Thread.sleep(pause * 60 * 1000);
+					System.out.println("Time paused: "+ ((pause / 100) * 60 * 60 * 1000));
+					Thread.sleep((pause / 100) * 60 * 60 * 1000);
 					d.findElement(By.xpath("//*[@ng-click='applAttendance()'][2]")).click();
 				}
 			} else { // Login code
@@ -152,19 +152,19 @@ public class runner {
 		d.quit();
 	}
 	
-	public static void main(String[] args) {
-		WebDriverManager.chromedriver().setup();
-		d = new ChromeDriver();
-		d.get("https://apps.paybooks.in/mylogin.aspx");
-		d.manage().deleteAllCookies();
-		d.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-		id = "762";
-		pass = "prem2180%";
-		d.findElement(By.id("txtDomain")).sendKeys("Apalya");
-		d.findElement(By.id("txtUserName")).sendKeys(id);
-		d.findElement(By.id("txtPassword")).sendKeys(pass);
-		d.findElement(By.id("btnLogin")).click();
-		d.findElement(By.id("menu1")).click();
-		d.findElement(By.xpath("//*[@id='topNavigation']//a[@ng-click='logout()']//span")).click();
-	}
+//	public static void main(String[] args) {
+//		WebDriverManager.chromedriver().setup();
+//		d = new ChromeDriver();
+//		d.get("https://apps.paybooks.in/mylogin.aspx");
+//		d.manage().deleteAllCookies();
+//		d.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+//		id = "762";
+//		pass = "prem2180%";
+//		d.findElement(By.id("txtDomain")).sendKeys("Apalya");
+//		d.findElement(By.id("txtUserName")).sendKeys(id);
+//		d.findElement(By.id("txtPassword")).sendKeys(pass);
+//		d.findElement(By.id("btnLogin")).click();
+//		d.findElement(By.id("menu1")).click();
+//		d.findElement(By.xpath("//*[@id='topNavigation']//a[@ng-click='logout()']//span")).click();
+//	}
 }
