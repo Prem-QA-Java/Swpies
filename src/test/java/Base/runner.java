@@ -139,6 +139,7 @@ public class runner {
 					Random randomGenerator = new Random();
 					int time = randomGenerator.nextInt(60) + 1;
 					time = time * 60000;
+					System.out.println("Time paused: "+time);
 					Thread.sleep(time);
 					d.findElement(By.xpath("//*[@ng-click='applAttendance()'][1]")).click();
 				}
